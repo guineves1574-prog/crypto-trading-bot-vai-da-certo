@@ -1,25 +1,19 @@
-from flask import Flask, request, jsonify
-from app.bot_manager import start_user_bot, stop_user_bot, get_status
+from fastapi import FastAPI
+import threading
+import time
 
-app = Flask(__name__)
+app = FastAPI()
 
-@app.route("/")
+def bot():
+    while True:
+        print("Rodando bot...")
+        time.sleep(10)
+
+@app.get("/")
 def home():
-    return "SaaS Bot Online 🚀"
+    return {"status": "bot rodando"}
 
-@app.route("/start")
-def start():
-    user_id = request.args.get("user")
-    return jsonify({"status": start_user_bot(user_id)})
-
-@app.route("/stop")
-def stop():
-    user_id = request.args.get("user")
-    return jsonify({"status": stop_user_bot(user_id)})
-
-@app.route("/status")
-def status():
-    user_id = request.args.get("user")
-    return jsonify({"running": get_status(user_id)})
-
-app.run(host="0.0.0.0", port=3000)
+@app.get("/start")
+def start_bot():
+    threading.Thread(target=bot).start()
+    return {"message": "bot iniciado"}
