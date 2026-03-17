@@ -17,3 +17,12 @@ def home():
 def start_bot():
     threading.Thread(target=bot).start()
     return {"message": "bot iniciado"}
+from fastapi.middleware.cors import CORSMiddleware
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
